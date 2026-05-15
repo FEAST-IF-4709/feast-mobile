@@ -1,55 +1,43 @@
+import 'package:feast/pages/profiles.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
 import 'voucher_screen.dart';
 import 'scan_qr_screen.dart';
+import '../pages/menu.dart';
+import '../pages/history.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String username;
 
   const HomeScreen({super.key, required this.username});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      _buildHomeContent(),
+      MenuPage(username: widget.username),
+      HistoryPage(username: widget.username),
+      ProfilePage(username: widget.username),
+    ];
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildAppBar(),
-                const SizedBox(height: 32),
-                _buildCards(context),
-                const SizedBox(height: 32),
-                Text(
-                  'Hot Deals',
-                  style: GoogleFonts.inter(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                _buildHotDeals(),
-                const SizedBox(height: 32),
-                Text(
-                  'Where do you want to eat?',
-                  style: GoogleFonts.inter(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                _buildFoodCategories(),
-                const SizedBox(height: 30),
-              ],
-            ),
-          ),
-        ),
+        child: pages[_selectedIndex],
       ),
       floatingActionButton: GestureDetector(
         onTap: () {
@@ -64,33 +52,76 @@ class HomeScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey.withOpacity(0.3), width: 1, style: BorderStyle.none),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey.withOpacity(0.5), width: 1.5, style: BorderStyle.solid),
-            ),
-            child: const Icon(
-              Icons.qr_code_scanner,
-              color: Colors.grey,
-              size: 28,
+            border: Border.all(color: Colors.grey.withOpacity(0.3), width: 1, style: BorderStyle.none),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey.withOpacity(0.5), width: 1.5, style: BorderStyle.solid),
+              ),
+              child: const Icon(
+                Icons.qr_code_scanner,
+                color: Colors.grey,
+                size: 28,
+              ),
             ),
           ),
-        ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  Widget _buildHomeContent() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            _buildAppBar(),
+            const SizedBox(height: 24),
+            _buildCards(context),
+            const SizedBox(height: 24),
+            _currentOrder(),
+            const SizedBox(height: 24),
+            Text(
+              'Hot Deals 🔥',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildHotDeals(),
+            const SizedBox(height: 24),
+            Text(
+              'Categories',
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildFoodCategories(),
+            const SizedBox(height: 100), // Space for bottom bar
+          ],
+        ),
+      ),
     );
   }
 
@@ -114,7 +145,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hi, ${username[0].toUpperCase()}${username.substring(1)}',
+              'Hi, ${widget.username[0].toUpperCase()}${widget.username.substring(1)}',
               style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -245,164 +276,163 @@ class HomeScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-              color: const Color(0xFFFFF4E6),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.orange.withOpacity(0.2)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                color: const Color(0xFFFFF4E6),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.orange.withOpacity(0.2)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.local_fire_department, color: Colors.deepOrange, size: 16),
                       ),
-                      child: const Icon(Icons.local_fire_department, color: Colors.deepOrange, size: 16),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Voucher',
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.deepOrange,
+                      const SizedBox(width: 8),
+                      Text(
+                        'Voucher',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.deepOrange,
+                        ),
                       ),
+                      const Spacer(),
+                      const Icon(Icons.arrow_right, color: Colors.deepOrange, size: 20),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    '30+',
+                    style: GoogleFonts.inter(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
                     ),
-                    const Spacer(),
-                    const Icon(Icons.arrow_right, color: Colors.deepOrange, size: 20),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  '30+',
-                  style: GoogleFonts.inter(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Voucher available',
-                  style: GoogleFonts.inter(
-                    fontSize: 10,
-                    color: Colors.grey,
+                  const SizedBox(height: 8),
+                  Text(
+                    'Voucher available',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ],
     );
   }
 
   Widget _buildHotDeals() {
+    final List<Map<String, String>> menuList = [
+      {
+        "title": "Spicy Chicken Wings",
+        "desc": "Chicken, Fries and Cola",
+        "price": "Rp 55.000",
+        "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec",
+      },
+      {
+        "title": "Beef Burger",
+        "desc": "Beef, Cheese and Fries",
+        "price": "Rp 45.000",
+        "image": "https://images.unsplash.com/photo-1550547660-d9450f859349",
+      },
+    ];
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       clipBehavior: Clip.none,
       child: Row(
-        children: [
-          Container(
-            width: 300,
-            height: 160,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE5F5E9),
-              borderRadius: BorderRadius.circular(20),
-              image: const DecorationImage(
-                image: NetworkImage('https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(Colors.black12, BlendMode.darken),
+        children: menuList.map((menu) {
+          return Row(
+            children: [
+              Container(
+                width: 256,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 128,
+                      width: 256,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(menu["image"]!),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 256,
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            menu["title"]!,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            menu["desc"]!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                menu["price"]!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Color(0xFFDD7A00),
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFDD7A00),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Text(
+                                  "Add",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'WING',
-                        style: GoogleFonts.rubik(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'STOP',
-                        style: GoogleFonts.rubik(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                   top: 16,
-                   right: 16,
-                   child: Text(
-                     'Hemat Berdua',
-                     style: GoogleFonts.rubik(
-                       fontSize: 24,
-                       fontWeight: FontWeight.w900,
-                       color: Colors.white,
-                       shadows: [
-                         const Shadow(color: Colors.black45, blurRadius: 4, offset: Offset(0, 2)),
-                       ]
-                     ),
-                   ),
-                ),
-                Positioned(
-                  bottom: 16,
-                  left: 16,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.yellow,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      'Rp 54.545',
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Container(
-            width: 300,
-            height: 160,
-            decoration: BoxDecoration(
-              color: Colors.black87,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Center(
-              child: Text('Next Banner Placeholder', style: TextStyle(color: Colors.white)),
-            ),
-          ),
-        ],
+              const SizedBox(width: 16),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
@@ -457,6 +487,61 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  Widget _currentOrder() {
+    return Container(
+        padding: const EdgeInsets.all(15),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFDD7A00),
+              Color(0xFFE0881B),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.set_meal,
+                    color: Color(0xFFDD7A00),
+                    size: 25,
+                  ),
+                ),
+              ),
+              Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("PREPARING ORDER...", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w700, fontSize: 12,)),
+                        const Text("Liceria’s Piezzeria", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18,)),
+                        const Text("Estimated: 15-20 mins", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 12,)),
+                      ]
+                  )
+              )
+            ]
+        )
+    );
+  }
+
   Widget _buildBottomNavigationBar() {
     return BottomAppBar(
       color: Colors.white,
@@ -469,19 +554,67 @@ class HomeScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            // Home Tab Active
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
+            GestureDetector(
+              onTap: () => _onItemTapped(0),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _selectedIndex == 0 ? AppColors.primary : Colors.transparent,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.home,
+                  color: _selectedIndex == 0 ? Colors.white : Colors.grey,
+                  size: 28,
+                ),
               ),
-              child: const Icon(Icons.home, color: Colors.white),
             ),
-            const Icon(Icons.room_service_outlined, color: Colors.grey, size: 28),
-            const SizedBox(width: 48), // Space for FAB
-            const Icon(Icons.receipt_long_outlined, color: Colors.grey, size: 28),
-            const Icon(Icons.person_outline, color: Colors.grey, size: 28),
+            GestureDetector(
+              onTap: () => _onItemTapped(1),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _selectedIndex == 1 ? AppColors.primary : Colors.transparent,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.room_service_outlined,
+                  color: _selectedIndex == 1 ? Colors.white : Colors.grey,
+                  size: 28,
+                ),
+              ),
+            ),
+            const SizedBox(width: 48),
+            GestureDetector(
+              onTap: () => _onItemTapped(2),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _selectedIndex == 2 ? AppColors.primary : Colors.transparent,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.receipt_long_outlined,
+                  color: _selectedIndex == 2 ? Colors.white : Colors.grey,
+                  size: 28,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => _onItemTapped(3),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _selectedIndex == 3 ? AppColors.primary : Colors.transparent,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person_outline,
+                  color: _selectedIndex == 3 ? Colors.white : Colors.grey,
+                  size: 28,
+                ),
+              ),
+            ),
           ],
         ),
       ),
