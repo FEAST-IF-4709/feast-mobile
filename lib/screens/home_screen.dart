@@ -198,144 +198,224 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCards(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MembershipScreen()),
-              );
-            },
-            child:  Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFEDF2F6),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.withOpacity(0.2)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.stars, color: Colors.blueGrey, size: 16),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Silver',
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        '100',
-                        style: GoogleFonts.inter(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'points',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Expire on Dec 31, 2026',
-                    style: GoogleFonts.inter(
-                      fontSize: 10,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 5),
+        // LEFT CARD
         Expanded(
           child: GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const VoucherScreen()),
+                MaterialPageRoute(
+                  builder: (_) => MembershipScreen()
+                ),
               );
             },
+
             child: Container(
-              padding: const EdgeInsets.all(16),
+              width: MediaQuery.of(context).size.width * 0.2,
+              padding: EdgeInsets.all(
+                MediaQuery.of(context).size.width * 0.04,
+              ),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFF4E6),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.orange.withOpacity(0.2)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(
+                  MediaQuery.of(context).size.width * 0.06,
+                ),
+                border: Border.all(
+                  color: const Color(0xFFF1DDD1),
+                  width: MediaQuery.of(context).size.width * 0.004,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.local_fire_department, color: Colors.deepOrange, size: 16),
+                      Icon(
+                          Icons.workspace_premium_outlined,
+                          color: Colors.grey.shade700,
+                          size:
+                          MediaQuery.of(context).size.width * 0.05
                       ),
-                      const SizedBox(width: 8),
+
+                      SizedBox(
+                        width:
+                        MediaQuery.of(context).size.width * 0.005,
+                      ),
+
                       Text(
-                        'Voucher',
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.deepOrange,
+                        "Silver Tier",
+                        style: TextStyle(
+                          fontSize:
+                          MediaQuery.of(context).size.width *
+                              0.03,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF9A5300),
                         ),
                       ),
-                      const Spacer(),
-                      const Icon(Icons.arrow_right, color: Colors.deepOrange, size: 20),
                     ],
                   ),
-                  const SizedBox(height: 12),
+
+                  SizedBox(
+                    height:
+                    MediaQuery.of(context).size.width * 0.04,
+                  ),
+
                   Text(
-                    '30+',
-                    style: GoogleFonts.inter(
-                      fontSize: 24,
+                    "100",
+                    style: TextStyle(
+                      fontSize:
+                      MediaQuery.of(context).size.width * 0.06,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: const Color(0xFFE07B00),
+                      height: 1,
                     ),
                   ),
-                  const SizedBox(height: 8),
+
+                  SizedBox(
+                    height:
+                    MediaQuery.of(context).size.width * 0.01,
+                  ),
+
                   Text(
-                    'Voucher available',
-                    style: GoogleFonts.inter(
-                      fontSize: 10,
-                      color: Colors.grey,
+                    "Available Points",
+                    style: TextStyle(
+                      fontSize:
+                      MediaQuery.of(context).size.width *
+                          0.03,
+                      color: Colors.grey.shade700,
                     ),
                   ),
                 ],
               ),
             ),
-          ),
+          )
+        ),
+
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.02
+          ,
+        ),
+
+        // RIGHT CARD
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => VoucherScreen()
+                ),
+              );
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width / 2,
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(
+                  MediaQuery.of(context).size.width * 0.06,
+                ),
+                border: Border.all(
+                  color: const Color(0xFFF1DDD1),
+                  width: MediaQuery.of(context).size.width * 0.004,
+                ),
+              ),
+              child: Stack(
+                children: [
+
+                  Column(
+                    crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.confirmation_number_outlined,
+                            color: const Color(0xFFE07B00),
+                            size:
+                            MediaQuery.of(context).size.width *
+                                0.05,
+                          ),
+
+                          SizedBox(
+                            width:
+                            MediaQuery.of(context).size.width *
+                                0.015,
+                          ),
+
+                          Text(
+                            "Vouchers",
+                            style: TextStyle(
+                              fontSize:
+                              MediaQuery.of(context).size.width * 0.03,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF2B1C14),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height:
+                        MediaQuery.of(context).size.width *
+                            0.045,
+                      ),
+
+                      Text(
+                        "20 Active",
+                        style: TextStyle(
+                          fontSize:
+                          MediaQuery.of(context).size.width *
+                              0.045,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF2B1C14),
+                          height: 1,
+                        ),
+                      ),
+
+                      SizedBox(
+                        height:
+                        MediaQuery.of(context).size.width *
+                            0.02,
+                      ),
+
+                      Row(
+                        children: [
+                          Text(
+                            "View All",
+                            style: TextStyle(
+                              fontSize:
+                              MediaQuery.of(context)
+                                  .size
+                                  .width *
+                                  0.03,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFFE07B00),
+                            ),
+                          ),
+
+                          SizedBox(
+                            width:
+                            MediaQuery.of(context).size.width *
+                                0.01,
+                          ),
+
+                          Icon(
+                            Icons.chevron_right,
+                            color: const Color(0xFFE07B00),
+                            size:
+                            MediaQuery.of(context).size.width *
+                                0.045,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
         ),
       ],
     );
