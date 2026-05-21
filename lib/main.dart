@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
       title: 'Feast App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: AppColors.primary,
+        // primaryColor: AppColors.primary,
         scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.interTextTheme(
           Theme.of(context).textTheme,
         ),
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+        // colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         useMaterial3: true,
       ),
       home: const SplashScreen(),
