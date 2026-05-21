@@ -1,6 +1,8 @@
+import 'package:feast/data/dummy_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
+import '../screens/detailpage.dart';
 
 class MenuPage extends StatelessWidget {
   final String username;
@@ -41,26 +43,147 @@ class MenuPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            _buildRestaurantCard(
-              imageUrl: 'https://img.freepik.com/premium-vector/sushi-restaurant-logo-design_612390-337.jpg',
-              name: 'Sushi Restaurant',
-              categories: 'Japanese • Sushi • Bento',
-              rating: '4.8',
-              time: '15-25 min',
-              imageBgColor: const Color(0xFFFFE5E5),
-            ),
-            const SizedBox(height: 24),
-            _buildRestaurantCard(
-              imageUrl: 'https://img.freepik.com/premium-vector/pizza-logo-design-template_145155-2503.jpg',
-              name: 'Liceria’s Pizzeria',
-              categories: 'Italian • Pizza • Pasta',
-              rating: '4.5',
-              time: '20-35 min',
-              imageBgColor: Colors.black,
-              isDarkImage: true,
-            ),
-            const SizedBox(height: 100),
+            SizedBox(height: MediaQuery.of(context).size.width * 0.05),
+            Column(
+              children: restaurants.map((restaurant){
+                return Container(
+                  margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.width * 0.05),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.width * 0.55,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(restaurant['logo']),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 12,
+                            right: 12,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.star, color: Colors.orange, size: 16),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    restaurant['rating'].toString(),
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              restaurant['name'],
+                              style: GoogleFonts.inter(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              restaurant['categories'].join(" • "),
+                              style: GoogleFonts.inter(
+                                fontSize: MediaQuery.of(context).size.width * 0.03,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.access_time, color: Colors.grey[600], size: 18),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      restaurant['estimate'].toString(),
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primary,
+                                    foregroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: MediaQuery.of(context).size.width * 0.03,
+                                        vertical: MediaQuery.of(context).size.width * 0.005),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => RestaurantDetailPage(restaurant: restaurant)
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'ORDER NOW',
+                                      style: GoogleFonts.inter(
+                                        fontSize: MediaQuery.of(context).size.width * 0.03,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList()
+            )
+
           ],
         ),
       ),

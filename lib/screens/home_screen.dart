@@ -5,9 +5,10 @@ import '../core/app_colors.dart';
 import 'voucher_screen.dart';
 import 'membership_screen.dart';
 import 'scan_qr_screen.dart';
-import '../pages/menu.dart';
+import '../pages/restaurants.dart';
 import '../pages/history.dart';
 import '../data/dummy_data.dart';
+import '../screens/detailpage.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -120,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 16),
             _buildRestaurant(context),
-            const SizedBox(height: 100), // Space for bottom bar
+            const SizedBox(height: 16), // Space for bottom bar
           ],
         ),
       ),
@@ -586,73 +587,85 @@ class _HomeScreenState extends State<HomeScreen> {
 
       gridDelegate:
       const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 0.75,
+        crossAxisCount: 4,
+        crossAxisSpacing: 10,
+        // mainAxisSpacing: 5,
+        childAspectRatio: 0.55,
       ),
 
-      itemCount: restaurants.length,
+      itemCount: 4,
 
       itemBuilder: (context, index) {
         final restaurant = restaurants[index];
 
-        return Column(
-          children: [
-            Container(
-              width:
-              MediaQuery.of(context).size.width * 0.2,
-
-              height:
-              MediaQuery.of(context).size.width * 0.2,
-
-              decoration: BoxDecoration(
-                color: restaurant['color'] as Color,
-                shape: BoxShape.circle,
-
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                    Colors.black.withOpacity(0.05),
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => RestaurantDetailPage(restaurant: restaurant)
               ),
+            );
+          },
+          child:  Column(
+            children: [
+              Container(
+                width:
+                MediaQuery.of(context).size.width * 0.2,
 
-              child: Center(
-                child: Icon(
-                  restaurant['icon'] as IconData,
-                  color: Colors.black87,
-                  size:
-                  MediaQuery.of(context).size.width *
-                      0.08,
+                height:
+                MediaQuery.of(context).size.width * 0.2,
+
+                decoration: BoxDecoration(
+                  color: restaurant['color'] as Color,
+                  shape: BoxShape.circle,
+
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                      Colors.black.withOpacity(0.05),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+
+                child: Center(
+                  child: Icon(
+                    restaurant['icon'] as IconData,
+                    color: Colors.black87,
+                    size:
+                    MediaQuery.of(context).size.width *
+                        0.08,
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(
-              height:
-              MediaQuery.of(context).size.width *
-                  0.02,
-            ),
-
-            Text(
-              restaurant['name'] as String,
-
-              textAlign: TextAlign.center,
-
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-
-              style: GoogleFonts.inter(
-                fontSize:
+              SizedBox(
+                height:
                 MediaQuery.of(context).size.width *
-                    0.028,
-
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                    0.02,
               ),
-            ),
-          ],
+
+              Text(
+                restaurant['name'] as String,
+
+                textAlign: TextAlign.center,
+
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+
+                style: GoogleFonts.inter(
+                  fontSize:
+                  MediaQuery.of(context).size.width *
+                      0.028,
+
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
