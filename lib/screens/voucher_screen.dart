@@ -1,227 +1,444 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../core/app_colors.dart';
 
-class VoucherScreen extends StatelessWidget {
-  const VoucherScreen({super.key});
+class VoucherPage extends StatefulWidget {
+  const VoucherPage({super.key});
+
+  @override
+  State<VoucherPage> createState() => _VoucherPageState();
+}
+
+class _VoucherPageState extends State<VoucherPage> {
+  String selectedBrand = "Select Brand";
+
+  final List<Map<String, dynamic>> vouchers = [
+    {
+      "brand": "Pizza House",
+      "price": "Rp100.000",
+      "min": "minimum spend Rp300.000",
+      "image":
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591",
+      "exp" : 7
+    },
+    {
+      "brand": "Sushi Restaurant",
+      "price": "Rp75.000",
+      "min": "minimum spend Rp500.000",
+      "image":
+      "https://images.unsplash.com/photo-1579871494447-9811cf80d66c",
+      "exp": 7,
+    },
+    {
+      "brand": "Aldi's Burger",
+      "price": "Rp100.000",
+      "min": "minimum spend Rp300.000",
+      "image":
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
+      "exp": 7,
+    },
+    {
+      "brand": "Piece of Cake",
+      "price": "Rp30.000",
+      "min": "minimum spend Rp100.000",
+      "image":
+      "https://images.unsplash.com/photo-1551024506-0bccd828d307",
+      "exp": 10,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final vouchers = [
-      {
-        'name': "Aldi's Burger",
-        'amount': '100.000',
-        'image': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=300&auto=format&fit=crop'
-      },
-      {
-        'name': "Liceria's Pizzaria",
-        'amount': '200.000',
-        'image': 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?q=80&w=300&auto=format&fit=crop'
-      },
-      {
-        'name': "Uncle John Coffee",
-        'amount': '50.000',
-        'image': 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=300&auto=format&fit=crop'
-      },
-      {
-        'name': "Sushi Restaurant",
-        'amount': '250.000',
-        'image': 'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=300&auto=format&fit=crop'
-      },
-    ];
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Voucher (40)',
-          style: GoogleFonts.inter(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+      backgroundColor: const Color(0xFFF8F4F1),
+
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: width * 0.04,
           ),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 45,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.withOpacity(0.3)),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Select Brand', style: GoogleFonts.inter(color: Colors.grey, fontSize: 13)),
-                        const Icon(Icons.arrow_drop_down, color: Colors.grey),
-                      ],
+          child: Column(
+            children: [
+              SizedBox(height: width * 0.04),
+
+              // HEADER
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    Icons.arrow_back_ios_new,
+                    size: width * 0.06,
+                  ),
+
+                  Text(
+                    "Voucher (20)",
+                    style: TextStyle(
+                      fontSize: width * 0.06,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Container(
-                    height: 45,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.withOpacity(0.3)),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: const Icon(Icons.percent, color: Colors.white, size: 14),
-                        ),
-                        const SizedBox(width: 8),
-                        Text('Voucher Code', style: GoogleFonts.inter(color: Colors.grey, fontSize: 13)),
-                      ],
-                    ),
+
+                  Icon(
+                    Icons.notifications_none_rounded,
+                    color: Colors.deepOrange,
+                    size: width * 0.065,
                   ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(bottom: 24),
-              itemCount: vouchers.length,
-              itemBuilder: (context, index) {
-                final v = vouchers[index];
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.02),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                ],
+              ),
+
+              SizedBox(height: width * 0.06),
+
+              // DROPDOWN + INPUT
+              Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.03,
                       ),
-                    ],
-                  ),
-                  clipBehavior: Clip.antiAlias, // Ensures image corners conform to the container
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'FEAST',
-                                style: GoogleFonts.inter(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  letterSpacing: 1.2,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                v['name']!,
-                                style: GoogleFonts.inter(
-                                  color: Colors.black87,
-                                  fontSize: 14,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const Spacer(),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                        BorderRadius.circular(
+                          width * 0.025,
+                        ),
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: selectedBrand,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
+                            size: width * 0.06,
+                          ),
+                          isExpanded: true,
+
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: width * 0.038,
+                          ),
+
+                          items: [
+                            "Select Brand",
+                            "Sushi Restaurant",
+                            "Pizza House",
+                            "Aldi's Burger",
+                            "Piece of Cake",
+                          ].map((String value) {
+                            return DropdownMenuItem(
+                              value: value,
+
+                              child: Row(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 2),
+                                  CircleAvatar(
+                                    radius: width * 0.022,
+                                    backgroundColor:
+                                    Colors.orange.shade100,
+                                    child: Icon(
+                                      Icons.restaurant,
+                                      size: width * 0.03,
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+
+                                  SizedBox(
+                                    width: width * 0.02,
+                                  ),
+
+                                  Expanded(
                                     child: Text(
-                                      'Rp ',
-                                      style: GoogleFonts.inter(color: Colors.black87, fontSize: 12),
+                                      value,
+                                      overflow:
+                                      TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Text(
-                                    v['amount']!,
-                                    style: GoogleFonts.inter(
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  // Container(
-                                  //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                                  //   decoration: BoxDecoration(
-                                  //     color: AppColors.primary,
-                                  //     borderRadius: BorderRadius.circular(12),
-                                  //   ),
-                                  //   child: Text(
-                                  //     'USE',
-                                  //     style: GoogleFonts.inter(
-                                  //       color: Colors.white,
-                                  //       fontSize: 9,
-                                  //       fontWeight: FontWeight.bold,
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
-                            ],
+                            );
+                          }).toList(),
+
+                          onChanged: (value) {
+                            setState(() {
+                              selectedBrand = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width: width * 0.03),
+
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.04,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                        BorderRadius.circular(
+                          width * 0.025,
+                        ),
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      child: TextField(
+                        style: TextStyle(
+                          fontSize: width * 0.038,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Voucher Code",
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: width * 0.038,
                           ),
                         ),
                       ),
-                      Container(
-                        width: 20,
-                        color: const Color(0xFFD36C00), // Slightly darker orange for contrast
-                        child: Center(
-                          child: RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              'a day left',
-                              style: GoogleFonts.inter(color: Colors.white, fontSize: 10),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: width * 0.05),
+
+              // LIST
+              Expanded(
+                child: ListView.builder(
+                  itemCount: vouchers.length,
+                  itemBuilder: (context, index) {
+                    final item = vouchers[index];
+
+                    return Container(
+                      margin: EdgeInsets.only(
+                        bottom: width * 0.04,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                        BorderRadius.circular(
+                          width * 0.04,
+                        ),
+                        border: Border.all(
+                          color: const Color(0xFFF0E2D8),
+                        ),
+                      ),
+
+                      child: Row(
+                        children: [
+                          // IMAGE
+                          ClipRRect(
+                            borderRadius:
+                            BorderRadius.only(
+                              topLeft: Radius.circular(
+                                width * 0.04,
+                              ),
+                              bottomLeft:
+                              Radius.circular(
+                                width * 0.04,
+                              ),
+                            ),
+
+                            child: Image.network(
+                              item["image"],
+                              width: width * 0.36,
+                              height: width * 0.45,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        width: 140, // Increased image width slightly to match proportion
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(v['image']!),
-                            fit: BoxFit.cover,
+
+                          // CONTENT
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                width * 0.03,
+                              ),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment
+                                    .start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding:
+                                        EdgeInsets.symmetric(
+                                          horizontal:
+                                          width *
+                                              0.025,
+                                          vertical:
+                                          width *
+                                              0.008,
+                                        ),
+                                        decoration:
+                                        BoxDecoration(
+                                          color: const Color(
+                                            0xFFE99000,
+                                          ),
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                            width * 0.02,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "FEAST",
+                                          style:
+                                          TextStyle(
+                                            color:
+                                            Colors
+                                                .white,
+                                            fontSize:
+                                            width *
+                                                0.025,
+                                          ),
+                                        ),
+                                      ),
+
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons
+                                                .calendar_today_outlined,
+                                            size:
+                                            width *
+                                                0.03,
+                                            color:
+                                            Colors
+                                                .grey,
+                                          ),
+
+                                          SizedBox(
+                                            width:
+                                            width *
+                                                0.01,
+                                          ),
+
+                                          Text(
+                                            "Valid until ${item["exp"]} days",
+                                            style:
+                                            TextStyle(
+                                              fontSize:
+                                              width *
+                                                  0.03,
+                                              color:
+                                              Colors
+                                                  .grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(
+                                    height:
+                                    width * 0.025,
+                                  ),
+
+                                  Text(
+                                    item["brand"],
+                                    style: TextStyle(
+                                      fontSize:
+                                      width * 0.05,
+                                      fontWeight:
+                                      FontWeight.w500,
+                                    ),
+                                  ),
+
+                                  Text(
+                                    item["price"],
+                                    style: TextStyle(
+                                      fontSize:
+                                      width * 0.055,
+                                      fontWeight:
+                                      FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  SizedBox(
+                                    height:
+                                    width * 0.01,
+                                  ),
+
+                                  Text(
+                                    item["min"],
+                                    style: TextStyle(
+                                      fontSize:
+                                      width * 0.03,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+
+                                  SizedBox(
+                                    height:
+                                    width * 0.025,
+                                  ),
+
+                                  Align(
+                                    alignment:
+                                    Alignment
+                                        .bottomRight,
+                                    child: Container(
+                                      padding:
+                                      EdgeInsets.symmetric(
+                                        horizontal:
+                                        width *
+                                            0.045,
+                                        vertical:
+                                        width *
+                                            0.025,
+                                      ),
+                                      decoration:
+                                      BoxDecoration(
+                                        color:
+                                        const Color(
+                                          0xFF9A5300,
+                                        ),
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                          width * 0.025,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "USE",
+                                        style:
+                                        TextStyle(
+                                          color: Colors
+                                              .white,
+                                          fontWeight:
+                                          FontWeight
+                                              .bold,
+                                          fontSize:
+                                          width *
+                                              0.032,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
