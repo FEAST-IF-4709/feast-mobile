@@ -66,9 +66,14 @@ class _VoucherPageState extends State<VoucherPage> {
                 mainAxisAlignment:
                 MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.arrow_back_ios_new,
-                    size: width * 0.06,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      size: width * 0.06,
+                    ),
                   ),
 
                   Text(

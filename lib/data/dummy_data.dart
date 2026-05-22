@@ -30,6 +30,7 @@ final List<Map<String, dynamic>> restaurants = [
         "description":
         "Classic pizza with pepperoni and melted mozzarella cheese.",
         "price": 120000,
+        "discount" : randomPromo() ? 10 : 0,
         "image":
         "https://images.unsplash.com/photo-1513104890138-7c749659a591",
       },

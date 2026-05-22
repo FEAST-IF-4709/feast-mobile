@@ -1,3 +1,4 @@
+import 'package:feast/screens/confirm_order.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -448,15 +449,25 @@ class RestaurantDetailPage extends StatelessWidget {
                                   color: primaryOrange,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                      "Add",
-                                    style: GoogleFonts.inter(
-                                      fontSize: MediaQuery.of(context).size.width * 0.03,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  )
+                                child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => ConfirmOrderPage(restaurant: restaurant)
+                                        ),
+                                      );
+                                    },
+                                  child: Center(
+                                      child: Text(
+                                        "Add",
+                                        style: GoogleFonts.inter(
+                                          fontSize: MediaQuery.of(context).size.width * 0.03,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                  ),
                                 )
                               )
                             ],
