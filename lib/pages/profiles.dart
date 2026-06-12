@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../screens/edit_profile_screen.dart';
+import '../screens/personal_info_screen.dart';
+import '../screens/security_privacy_screen.dart';
+import '../screens/notification_settings_screen.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -25,7 +29,12 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const EditProfileScreen()),
+                      );
+                    },
                     icon: const Icon(
                       Icons.notifications_none_rounded,
                       color: Colors.deepOrange,
@@ -131,17 +140,25 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
 
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.1,
-                      height: MediaQuery.of(context).size.width * 0.1,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFEFE3),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.edit,
-                        color: Colors.orange,
-                        size: 20,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const EditProfileScreen()),
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.1,
+                        height: MediaQuery.of(context).size.width * 0.1,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFEFE3),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.orange,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],
@@ -304,6 +321,12 @@ class ProfilePage extends StatelessWidget {
                       context,
                       Icons.person_outline,
                       "Personal Information",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const PersonalInfoScreen()),
+                        );
+                      },
                     ),
 
                     SizedBox(height: MediaQuery.of(context).size.width * 0.05),
@@ -312,6 +335,12 @@ class ProfilePage extends StatelessWidget {
                       context,
                       Icons.notifications_none_rounded,
                       "Notifications",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const NotificationSettingsScreen()),
+                        );
+                      },
                     ),
 
                     SizedBox(height: MediaQuery.of(context).size.width * 0.05),
@@ -320,6 +349,12 @@ class ProfilePage extends StatelessWidget {
                       context,
                       Icons.shield_outlined,
                       "Security & Privacy",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SecurityPrivacyScreen()),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -363,42 +398,44 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget buildMenuItem(
-      BuildContext context,
-      IconData icon,
-      String title,
-      ) {
-    return Row(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.12,
-          height: MediaQuery.of(context).size.width * 0.12,
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF1E8),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            color: Colors.orange.shade800,
-          ),
-        ),
-
-        SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-
-        Expanded(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width * 0.04,
-              fontWeight: FontWeight.w500,
+    BuildContext context,
+    IconData icon,
+    String title, {
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.12,
+            height: MediaQuery.of(context).size.width * 0.12,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFF1E8),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: Colors.orange.shade800,
             ),
           ),
-        ),
-
-        Icon(
-          Icons.chevron_right,
-          color: Colors.brown.shade300,
-        ),
-      ],
+          SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.04,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Icon(
+            Icons.chevron_right,
+            color: Colors.brown.shade300,
+          ),
+        ],
+      ),
     );
   }
 }

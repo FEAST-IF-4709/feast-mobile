@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
+import '../core/session_manager.dart';
 import 'register_screen.dart';
 import 'home_screen.dart';
 
@@ -96,8 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_emailController.text == 'user' && _passwordController.text == 'user') {
+                        // Simpan session
+                        await SessionManager.saveSession(_emailController.text);
+                        
+                        if (!mounted) return;
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

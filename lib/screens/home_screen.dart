@@ -129,71 +129,79 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildAppBar() {
-    return Row(
-      children: [
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: const DecorationImage(
-              image: NetworkImage('https://i.pravatar.cc/150?img=11'),
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
+      },
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: const DecorationImage(
+                image: NetworkImage('https://i.pravatar.cc/150?img=11'),
+                fit: BoxFit.cover,
+              ),
+              border: Border.all(color: Colors.grey.withOpacity(0.2)),
             ),
-            border: Border.all(color: Colors.grey.withOpacity(0.2)),
           ),
-        ),
-        const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hi, ${widget.username[0].toUpperCase()}${widget.username.substring(1)}',
-              style: GoogleFonts.inter(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            Text(
-              'Silver Membership',
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-        const Spacer(),
-        Stack(
-          children: [
-            const Icon(
-              Icons.notifications_none_rounded,
-              color: AppColors.primary,
-              size: 28,
-            ),
-            Positioned(
-              right: 2,
-              top: 2,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Hi, ${widget.username[0].toUpperCase()}${widget.username.substring(1)}',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(width: 16),
-        const Icon(
-          Icons.settings_outlined,
-          color: AppColors.primary,
-          size: 28,
-        ),
-      ],
+              Text(
+                'Silver Membership',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          Stack(
+            children: [
+              const Icon(
+                Icons.notifications_none_rounded,
+                color: AppColors.primary,
+                size: 28,
+              ),
+              Positioned(
+                right: 2,
+                top: 2,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 16),
+          const Icon(
+            Icons.settings_outlined,
+            color: AppColors.primary,
+            size: 28,
+          ),
+        ],
+      ),
     );
   }
 

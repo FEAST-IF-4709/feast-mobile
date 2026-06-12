@@ -1,9 +1,10 @@
+import 'package:feast/screens/payment_screen.dart';
 import 'package:feast/screens/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/app_colors.dart';
 
-class ConfirmOrderPage extends StatelessWidget {
+class ConfirmOrderPage extends StatefulWidget {
   final Map<String, dynamic> restaurant;
 
   const ConfirmOrderPage({
@@ -11,11 +12,137 @@ class ConfirmOrderPage extends StatelessWidget {
     required this.restaurant,
   });
 
+  @override
+  State<ConfirmOrderPage> createState() => _ConfirmOrderPageState();
+}
+
+class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
   // Menggunakan warna dari desain sebelumnya
   final Color primaryOrange = const Color(0xFFE27C00);
   final Color titleColor = const Color(0xFF261D18);
   final Color descColor = const Color(0xFF5D4F46);
   final Color cardBorderColor = const Color(0xFFFDECE2);
+
+  String selectedPaymentMethod = 'QRIS';
+
+  void _showPaymentPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Payment Method",
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildPaymentOption(
+                    title: "QRIS",
+                    subtitle: "Pay with any e-wallet or banking app",
+                    icon: Icons.qr_code_2,
+                    isSelected: selectedPaymentMethod == 'QRIS',
+                    onTap: () {
+                      setState(() => selectedPaymentMethod = 'QRIS');
+                      setModalState(() {});
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _buildPaymentOption(
+                    title: "CASH",
+                    subtitle: "Pay on Cashier",
+                    icon: Icons.payments_outlined,
+                    isSelected: selectedPaymentMethod == 'CASH',
+                    onTap: () {
+                      setState(() => selectedPaymentMethod = 'CASH');
+                      setModalState(() {});
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildPaymentOption({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFFDF2E9) : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? primaryOrange : Colors.grey.shade200,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: primaryOrange, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              isSelected ? Icons.check_circle : Icons.circle_outlined,
+              color: isSelected ? primaryOrange : Colors.grey.shade300,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,96 +291,98 @@ class ConfirmOrderPage extends StatelessWidget {
 
               SizedBox(height: screenHeight * 0.03,),
 
-              Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: screenHeight * 0.025,
-                  horizontal: screenWidth * 0.03,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Color(0xFFDD7A00), width: 1),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                            "Payment Methode",
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.038,
-                              fontWeight: FontWeight(600)
-                            ),
-                        ),
-                        Text(
-                            "Change",
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.032,
-                            color: Color(0xFFDD7A00),
-                            fontWeight: FontWeight(600)
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: screenWidth * 0.02),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.01,
-                        horizontal: screenWidth * 0.02,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(255, 241, 233, 1),
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Row(
+              GestureDetector(
+                onTap: _showPaymentPicker,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: screenHeight * 0.025,
+                    horizontal: screenWidth * 0.03,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: const Color(0xFFDD7A00), width: 1),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: screenWidth * 0.15,
-                            height: screenWidth * 0.15,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.qr_code_2,
-                                color: Color(0xFFDD7A00),
-                                size: screenWidth * 0.085,
-                              ),
-
-                            ),
+                          Text(
+                            "Payment Method",
+                            style: TextStyle(
+                                fontSize: screenWidth * 0.038,
+                                fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(width: screenWidth * 0.02,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "QRIS",
-                                style: TextStyle(
-                                    fontWeight: FontWeight(600),
-                                    fontSize: screenWidth * 0.045),
-                                ),
-                              SizedBox(height: screenWidth * 0.01),
-                              Text(
-                                  "Pay with any e-wallet or banking app",
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.025,
-                                ),
-                              )
-                            ],
+                          Text(
+                            "Change",
+                            style: TextStyle(
+                                fontSize: screenWidth * 0.032,
+                                color: const Color(0xFFDD7A00),
+                                fontWeight: FontWeight.w600),
                           )
                         ],
                       ),
-                    )
-
-                  ],
+                      SizedBox(height: screenWidth * 0.02),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: screenHeight * 0.01,
+                          horizontal: screenWidth * 0.02,
+                        ),
+                        decoration: BoxDecoration(
+                            color: const Color.fromRGBO(255, 241, 233, 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: screenWidth * 0.15,
+                              height: screenWidth * 0.15,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  selectedPaymentMethod == 'QRIS'
+                                      ? Icons.qr_code_2
+                                      : Icons.payments_outlined,
+                                  color: const Color(0xFFDD7A00),
+                                  size: screenWidth * 0.085,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: screenWidth * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  selectedPaymentMethod,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: screenWidth * 0.045),
+                                ),
+                                SizedBox(height: screenWidth * 0.01),
+                                Text(
+                                  selectedPaymentMethod == 'QRIS'
+                                      ? "Pay with any e-wallet or banking app"
+                                      : "Pay on Cashier",
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 0.025,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
 
@@ -325,7 +454,10 @@ class ConfirmOrderPage extends StatelessWidget {
             elevation: 0,
           ),
           onPressed: () {
-            // Action saat place order
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PaymentScreen()),
+            );
           },
           child: Text(
             "Place Order - Rp 203.000",
@@ -336,18 +468,6 @@ class ConfirmOrderPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  // Helper Widget: Section Title
-  Widget _buildSectionTitle(String title, double screenWidth) {
-    return Text(
-      title,
-      style: GoogleFonts.inter(
-        fontSize: screenWidth * 0.045,
-        fontWeight: FontWeight.bold,
-        color: titleColor,
       ),
     );
   }
@@ -386,24 +506,24 @@ class ConfirmOrderPage extends StatelessWidget {
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.bold,
                   fontSize: screenWidth * 0.04,
-                  color: titleColor,
+                  color: const Color(0xFF261D18),
                 ),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 notes,
                 style: GoogleFonts.inter(
                   fontSize: screenWidth * 0.03,
-                  color: descColor,
+                  color: const Color(0xFF5D4F46),
                   fontStyle: FontStyle.italic,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 price,
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.bold,
-                  color: primaryOrange,
+                  color: const Color(0xFFE27C00),
                   fontSize: screenWidth * 0.035,
                 ),
               ),
@@ -418,14 +538,14 @@ class ConfirmOrderPage extends StatelessWidget {
             vertical: screenWidth * 0.015,
           ),
           decoration: BoxDecoration(
-            color: cardBorderColor,
+            color: const Color(0xFFFDECE2),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Text(
             "${qty}x",
             style: GoogleFonts.inter(
               fontWeight: FontWeight.bold,
-              color: primaryOrange,
+              color: const Color(0xFFE27C00),
               fontSize: screenWidth * 0.035,
             ),
           ),
@@ -443,7 +563,7 @@ class ConfirmOrderPage extends StatelessWidget {
           label,
           style: GoogleFonts.inter(
             fontSize: screenWidth * 0.035,
-            color: descColor,
+            color: const Color(0xFF5D4F46),
           ),
         ),
         Text(
@@ -451,10 +571,22 @@ class ConfirmOrderPage extends StatelessWidget {
           style: GoogleFonts.inter(
             fontSize: screenWidth * 0.035,
             fontWeight: FontWeight.w600,
-            color: titleColor,
+            color: const Color(0xFF261D18),
           ),
         ),
       ],
+    );
+  }
+
+  // Helper Widget: Section Title
+  Widget _buildSectionTitle(String title, double screenWidth) {
+    return Text(
+      title,
+      style: GoogleFonts.inter(
+        fontSize: screenWidth * 0.045,
+        fontWeight: FontWeight.bold,
+        color: const Color(0xFF261D18),
+      ),
     );
   }
 }
