@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/edit_profile_screen.dart';
 import '../screens/personal_info_screen.dart';
-import '../screens/security_privacy_screen.dart';
-import '../screens/notification_settings_screen.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -53,7 +51,7 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -185,7 +183,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.brown.withOpacity(0.15),
+                      color: Colors.brown.withValues(alpha: 0.15),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     ),
@@ -221,7 +219,7 @@ class ProfilePage extends StatelessWidget {
                         Text(
                           "You're 250 pts away from Gold!",
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white.withValues(alpha: 0.9),
                             fontSize: MediaQuery.of(context).size.width * 0.03,
                           ),
                         ),
@@ -296,7 +294,7 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -331,30 +329,20 @@ class ProfilePage extends StatelessWidget {
 
                     SizedBox(height: MediaQuery.of(context).size.width * 0.05),
 
+                    // TODO(M7): Notifications — FCM out of scope for M1–M8 (PRD §8)
                     buildMenuItem(
                       context,
                       Icons.notifications_none_rounded,
                       "Notifications",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const NotificationSettingsScreen()),
-                        );
-                      },
                     ),
 
                     SizedBox(height: MediaQuery.of(context).size.width * 0.05),
 
+                    // TODO(M7): Security & Privacy — no PRD equivalent in Phase 1
                     buildMenuItem(
                       context,
                       Icons.shield_outlined,
                       "Security & Privacy",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SecurityPrivacyScreen()),
-                        );
-                      },
                     ),
                   ],
                 ),

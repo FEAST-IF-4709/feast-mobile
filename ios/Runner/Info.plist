@@ -4,6 +4,10 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera access to scan QR codes</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Feast perlu akses galeri untuk menyimpan kode QRIS pembayaran.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Feast uses your location to show nearby brands first.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
