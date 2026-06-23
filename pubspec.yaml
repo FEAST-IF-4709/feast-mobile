@@ -24,6 +24,7 @@ dependencies:
 
   # HTTP client (Fase M1)
   dio: ^5.7.0
+  http: ^1.2.0
 
   # Secure token storage (Fase M1)
   flutter_secure_storage: ^9.2.2
@@ -53,6 +54,15 @@ dependencies:
 
   # Device location for sort-by-distance (Brands screen)
   geolocator: ^13.0.1
+
+  # PDF receipt generation + print/save (F3)
+  pdf: ^3.11.0
+  printing: ^5.13.1
+
+  # Push notifications via FCM (F1B)
+  firebase_core: ^3.13.1
+  firebase_messaging: ^15.2.5
+  flutter_local_notifications: ^18.0.1
 
 dev_dependencies:
   flutter_test:

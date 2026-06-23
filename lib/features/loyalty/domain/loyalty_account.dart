@@ -39,6 +39,8 @@ class LoyaltyAccount with _$LoyaltyAccount {
     required String tier,
     /// Points earned in the current tier-calculation window (previous month).
     @JsonKey(name: 'tier_points_in_window') required int tierPointsInWindow,
+    /// Number of AVAILABLE (unredeemed, non-expired) vouchers the customer owns.
+    @JsonKey(name: 'active_voucher_count') @Default(0) int activeVoucherCount,
     @Default([]) List<LoyaltyTransaction> transactions,
   }) = _LoyaltyAccount;
 

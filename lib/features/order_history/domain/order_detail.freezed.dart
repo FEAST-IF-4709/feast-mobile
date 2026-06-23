@@ -298,6 +298,10 @@ mixin _$OrderDetail {
   String get outletName => throw _privateConstructorUsedError;
   @JsonKey(name: 'brand_name')
   String? get brandName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'outlet_address')
+  String? get outletAddress => throw _privateConstructorUsedError;
+  @JsonKey(name: 'brand_logo_url')
+  String? get brandLogoUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'tax_amount')
   String? get taxAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'grand_total')
@@ -331,6 +335,8 @@ abstract class $OrderDetailCopyWith<$Res> {
     @JsonKey(name: 'order_number') String orderNumber,
     @JsonKey(name: 'outlet_name') String outletName,
     @JsonKey(name: 'brand_name') String? brandName,
+    @JsonKey(name: 'outlet_address') String? outletAddress,
+    @JsonKey(name: 'brand_logo_url') String? brandLogoUrl,
     @JsonKey(name: 'tax_amount') String? taxAmount,
     @JsonKey(name: 'grand_total') String grandTotal,
     @JsonKey(name: 'fulfillment_status') String fulfillmentStatus,
@@ -359,6 +365,8 @@ class _$OrderDetailCopyWithImpl<$Res, $Val extends OrderDetail>
     Object? orderNumber = null,
     Object? outletName = null,
     Object? brandName = freezed,
+    Object? outletAddress = freezed,
+    Object? brandLogoUrl = freezed,
     Object? taxAmount = freezed,
     Object? grandTotal = null,
     Object? fulfillmentStatus = null,
@@ -383,6 +391,14 @@ class _$OrderDetailCopyWithImpl<$Res, $Val extends OrderDetail>
             brandName: freezed == brandName
                 ? _value.brandName
                 : brandName // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            outletAddress: freezed == outletAddress
+                ? _value.outletAddress
+                : outletAddress // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            brandLogoUrl: freezed == brandLogoUrl
+                ? _value.brandLogoUrl
+                : brandLogoUrl // ignore: cast_nullable_to_non_nullable
                       as String?,
             taxAmount: freezed == taxAmount
                 ? _value.taxAmount
@@ -428,6 +444,8 @@ abstract class _$$OrderDetailImplCopyWith<$Res>
     @JsonKey(name: 'order_number') String orderNumber,
     @JsonKey(name: 'outlet_name') String outletName,
     @JsonKey(name: 'brand_name') String? brandName,
+    @JsonKey(name: 'outlet_address') String? outletAddress,
+    @JsonKey(name: 'brand_logo_url') String? brandLogoUrl,
     @JsonKey(name: 'tax_amount') String? taxAmount,
     @JsonKey(name: 'grand_total') String grandTotal,
     @JsonKey(name: 'fulfillment_status') String fulfillmentStatus,
@@ -455,6 +473,8 @@ class __$$OrderDetailImplCopyWithImpl<$Res>
     Object? orderNumber = null,
     Object? outletName = null,
     Object? brandName = freezed,
+    Object? outletAddress = freezed,
+    Object? brandLogoUrl = freezed,
     Object? taxAmount = freezed,
     Object? grandTotal = null,
     Object? fulfillmentStatus = null,
@@ -479,6 +499,14 @@ class __$$OrderDetailImplCopyWithImpl<$Res>
         brandName: freezed == brandName
             ? _value.brandName
             : brandName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        outletAddress: freezed == outletAddress
+            ? _value.outletAddress
+            : outletAddress // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        brandLogoUrl: freezed == brandLogoUrl
+            ? _value.brandLogoUrl
+            : brandLogoUrl // ignore: cast_nullable_to_non_nullable
                   as String?,
         taxAmount: freezed == taxAmount
             ? _value.taxAmount
@@ -517,6 +545,8 @@ class _$OrderDetailImpl implements _OrderDetail {
     @JsonKey(name: 'order_number') required this.orderNumber,
     @JsonKey(name: 'outlet_name') this.outletName = '',
     @JsonKey(name: 'brand_name') this.brandName,
+    @JsonKey(name: 'outlet_address') this.outletAddress,
+    @JsonKey(name: 'brand_logo_url') this.brandLogoUrl,
     @JsonKey(name: 'tax_amount') this.taxAmount,
     @JsonKey(name: 'grand_total') required this.grandTotal,
     @JsonKey(name: 'fulfillment_status') required this.fulfillmentStatus,
@@ -539,6 +569,12 @@ class _$OrderDetailImpl implements _OrderDetail {
   @override
   @JsonKey(name: 'brand_name')
   final String? brandName;
+  @override
+  @JsonKey(name: 'outlet_address')
+  final String? outletAddress;
+  @override
+  @JsonKey(name: 'brand_logo_url')
+  final String? brandLogoUrl;
   @override
   @JsonKey(name: 'tax_amount')
   final String? taxAmount;
@@ -564,7 +600,7 @@ class _$OrderDetailImpl implements _OrderDetail {
 
   @override
   String toString() {
-    return 'OrderDetail(id: $id, orderNumber: $orderNumber, outletName: $outletName, brandName: $brandName, taxAmount: $taxAmount, grandTotal: $grandTotal, fulfillmentStatus: $fulfillmentStatus, placedAt: $placedAt, notes: $notes, items: $items)';
+    return 'OrderDetail(id: $id, orderNumber: $orderNumber, outletName: $outletName, brandName: $brandName, outletAddress: $outletAddress, brandLogoUrl: $brandLogoUrl, taxAmount: $taxAmount, grandTotal: $grandTotal, fulfillmentStatus: $fulfillmentStatus, placedAt: $placedAt, notes: $notes, items: $items)';
   }
 
   @override
@@ -579,6 +615,10 @@ class _$OrderDetailImpl implements _OrderDetail {
                 other.outletName == outletName) &&
             (identical(other.brandName, brandName) ||
                 other.brandName == brandName) &&
+            (identical(other.outletAddress, outletAddress) ||
+                other.outletAddress == outletAddress) &&
+            (identical(other.brandLogoUrl, brandLogoUrl) ||
+                other.brandLogoUrl == brandLogoUrl) &&
             (identical(other.taxAmount, taxAmount) ||
                 other.taxAmount == taxAmount) &&
             (identical(other.grandTotal, grandTotal) ||
@@ -599,6 +639,8 @@ class _$OrderDetailImpl implements _OrderDetail {
     orderNumber,
     outletName,
     brandName,
+    outletAddress,
+    brandLogoUrl,
     taxAmount,
     grandTotal,
     fulfillmentStatus,
@@ -627,6 +669,8 @@ abstract class _OrderDetail implements OrderDetail {
     @JsonKey(name: 'order_number') required final String orderNumber,
     @JsonKey(name: 'outlet_name') final String outletName,
     @JsonKey(name: 'brand_name') final String? brandName,
+    @JsonKey(name: 'outlet_address') final String? outletAddress,
+    @JsonKey(name: 'brand_logo_url') final String? brandLogoUrl,
     @JsonKey(name: 'tax_amount') final String? taxAmount,
     @JsonKey(name: 'grand_total') required final String grandTotal,
     @JsonKey(name: 'fulfillment_status')
@@ -650,6 +694,12 @@ abstract class _OrderDetail implements OrderDetail {
   @override
   @JsonKey(name: 'brand_name')
   String? get brandName;
+  @override
+  @JsonKey(name: 'outlet_address')
+  String? get outletAddress;
+  @override
+  @JsonKey(name: 'brand_logo_url')
+  String? get brandLogoUrl;
   @override
   @JsonKey(name: 'tax_amount')
   String? get taxAmount;

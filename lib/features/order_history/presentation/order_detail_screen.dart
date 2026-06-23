@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,7 +6,9 @@ import 'package:intl/intl.dart';
 
 import '../../../core/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/utils/url_utils.dart';
 import '../../../features/order_tracking/domain/fulfillment_status.dart';
+import '../../../features/receipt/services/receipt_generator.dart';
 import '../../../shared/widgets/dashed_divider.dart';
 import '../domain/order_detail.dart';
 import '../providers/order_history_notifier.dart';
@@ -291,6 +294,43 @@ class _DetailBody extends StatelessWidget {
                 // Total card
                 _Card(
                   child: _PriceSummary(detail: detail),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Struk Digital
+                GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (_) => _ReceiptSheet(detail: detail),
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.primary),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.receipt_long_outlined,
+                            color: AppColors.primary, size: 18),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Struk Digital',
+                          style: GoogleFonts.inter(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 const SizedBox(height: 32),
@@ -701,4 +741,415 @@ class _StatusBadge extends StatelessWidget {
       ),
     );
   }
+}
+
+// ---------------------------------------------------------------------------
+// Receipt bottom sheet (F3)
+// ---------------------------------------------------------------------------
+
+class _ReceiptSheet extends StatefulWidget {
+  const _ReceiptSheet({required this.detail});
+  final OrderDetail detail;
+
+  @override
+  State<_ReceiptSheet> createState() => _ReceiptSheetState();
+}
+
+class _ReceiptSheetState extends State<_ReceiptSheet> {
+  bool _loadingPrint = false;
+  bool _loadingShare = false;
+
+  static final _numFmt = NumberFormat('#,###', 'id_ID');
+
+  String _fmt(String raw) =>
+      _numFmt.format((double.tryParse(raw) ?? 0).toInt());
+
+  @override
+  Widget build(BuildContext context) {
+    final detail = widget.detail;
+    final formattedDate = DateFormat('d MMM yyyy, HH:mm', 'id_ID')
+        .format(detail.placedAt.toLocal());
+    final itemsSubtotal = detail.items.fold(
+      0.0,
+      (sum, item) => sum + (double.tryParse(item.lineTotal) ?? 0),
+    );
+    final tax = double.tryParse(detail.taxAmount ?? '0') ?? 0;
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.85,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      builder: (_, controller) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          children: [
+            // Drag handle
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 12, bottom: 8),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+
+            // Title bar
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Struk Digital',
+                    style: GoogleFonts.inter(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, size: 20),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ),
+
+            // Receipt scroll area
+            Expanded(
+              child: ListView(
+                controller: controller,
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                children: [
+                  // Brand logo + name + address
+                  Center(
+                    child: Column(
+                      children: [
+                        ClipOval(
+                          child: (detail.brandLogoUrl != null && detail.brandLogoUrl!.isNotEmpty)
+                              ? CachedNetworkImage(
+                                  imageUrl: fixMediaUrl(detail.brandLogoUrl)!,
+                                  width: 64,
+                                  height: 64,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (_, _, _) =>
+                                      _FallbackLogo(detail.brandName),
+                                )
+                              : _FallbackLogo(detail.brandName),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          detail.brandName ?? detail.outletName,
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        if (detail.brandName != null &&
+                            detail.outletName.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            detail.outletName,
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                        if (detail.outletAddress != null &&
+                            detail.outletAddress!.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            detail.outletAddress!,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: Colors.grey.shade500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+                  const DashedDivider(),
+                  const SizedBox(height: 12),
+
+                  // Order meta
+                  _ReceiptRow(
+                    label: 'No. Order',
+                    value: '#${detail.orderNumber}',
+                    bold: true,
+                  ),
+                  const SizedBox(height: 4),
+                  _ReceiptRow(label: 'Tanggal', value: formattedDate),
+
+                  const SizedBox(height: 12),
+                  const DashedDivider(),
+                  const SizedBox(height: 12),
+
+                  // Items
+                  ...detail.items.map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 26,
+                            height: 26,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFF1E8),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '${item.quantity}x',
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              item.productName ?? '-',
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'Rp ${_fmt(item.lineTotal)}',
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+                  const DashedDivider(),
+                  const SizedBox(height: 12),
+
+                  // Price rows
+                  _ReceiptRow(
+                    label: 'Subtotal',
+                    value:
+                        'Rp ${_numFmt.format(itemsSubtotal.toInt())}',
+                  ),
+                  if (tax > 0) ...[
+                    const SizedBox(height: 4),
+                    _ReceiptRow(
+                      label: 'Pajak',
+                      value: 'Rp ${_fmt(detail.taxAmount!)}',
+                    ),
+                  ],
+                  const SizedBox(height: 10),
+                  Divider(height: 1, color: Colors.grey.shade200),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Total Pembayaran',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        'Rp ${_fmt(detail.grandTotal)}',
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                ],
+              ),
+            ),
+
+            // Action buttons
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                20,
+                8,
+                20,
+                MediaQuery.of(context).padding.bottom + 16,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _ReceiptActionButton(
+                      icon: Icons.download_outlined,
+                      label: 'Download PDF',
+                      isLoading: _loadingPrint,
+                      onTap: () async {
+                        setState(() => _loadingPrint = true);
+                        try {
+                          await ReceiptGenerator.printOrSave(detail);
+                        } finally {
+                          if (mounted) setState(() => _loadingPrint = false);
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _ReceiptActionButton(
+                      icon: Icons.share_outlined,
+                      label: 'Share',
+                      isLoading: _loadingShare,
+                      filled: true,
+                      onTap: () async {
+                        setState(() => _loadingShare = true);
+                        try {
+                          await ReceiptGenerator.share(detail);
+                        } finally {
+                          if (mounted) setState(() => _loadingShare = false);
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FallbackLogo extends StatelessWidget {
+  const _FallbackLogo(this.brandName);
+  final String? brandName;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        width: 64,
+        height: 64,
+        color: const Color(0xFFDD7A00),
+        alignment: Alignment.center,
+        child: Text(
+          (brandName ?? 'F').substring(0, 1).toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+}
+
+class _ReceiptRow extends StatelessWidget {
+  const _ReceiptRow({
+    required this.label,
+    required this.value,
+    this.bold = false,
+  });
+  final String label;
+  final String value;
+  final bool bold;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              color: Colors.grey.shade600,
+            ),
+          ),
+          Text(
+            value,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              fontWeight: bold ? FontWeight.bold : FontWeight.w500,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      );
+}
+
+class _ReceiptActionButton extends StatelessWidget {
+  const _ReceiptActionButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.isLoading = false,
+    this.filled = false,
+  });
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final bool isLoading;
+  final bool filled;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: isLoading ? null : onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+            color: filled ? AppColors.primary : Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border:
+                filled ? null : Border.all(color: AppColors.primary),
+          ),
+          child: isLoading
+              ? Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color:
+                          filled ? Colors.white : AppColors.primary,
+                    ),
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon,
+                        size: 18,
+                        color:
+                            filled ? Colors.white : AppColors.primary),
+                    const SizedBox(width: 6),
+                    Text(
+                      label,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            filled ? Colors.white : AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      );
 }

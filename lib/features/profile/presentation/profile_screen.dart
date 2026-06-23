@@ -372,7 +372,7 @@ class _ProfileBody extends ConsumerWidget {
       await ref.read(authNotifierProvider.notifier).logout();
       // Invalidate profile cache so next login fetches fresh data.
       ref.invalidate(profileNotifierProvider);
-      if (context.mounted) context.go(AppRoutes.qrScan);
+      // Router guard detects AuthState.unauthenticated and redirects to login.
     }
   }
 

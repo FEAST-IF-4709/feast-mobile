@@ -34,6 +34,8 @@ class OrderDetail with _$OrderDetail {
     @JsonKey(name: 'order_number') required String orderNumber,
     @JsonKey(name: 'outlet_name') @Default('') String outletName,
     @JsonKey(name: 'brand_name') String? brandName,
+    @JsonKey(name: 'outlet_address') String? outletAddress,
+    @JsonKey(name: 'brand_logo_url') String? brandLogoUrl,
     @JsonKey(name: 'tax_amount') String? taxAmount,
     @JsonKey(name: 'grand_total') required String grandTotal,
     @JsonKey(name: 'fulfillment_status') required String fulfillmentStatus,

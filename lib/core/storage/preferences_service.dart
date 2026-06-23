@@ -9,6 +9,7 @@ abstract final class _Keys {
   static const savedLocationLat = 'saved_location_lat';
   static const savedLocationLng = 'saved_location_lng';
   static const activeOrderId = 'active_order_id';
+  static const notificationHistory = 'notification_history';
 }
 
 /// Wraps shared_preferences for non-sensitive, non-token data.
@@ -47,6 +48,12 @@ class PreferencesService {
 
   Future<void> clearActiveOrderId() async =>
       (await _prefs).remove(_Keys.activeOrderId);
+
+  Future<String?> getNotificationHistory() async =>
+      (await _prefs).getString(_Keys.notificationHistory);
+
+  Future<void> saveNotificationHistory(String json) async =>
+      (await _prefs).setString(_Keys.notificationHistory, json);
 
   /// Called on logout — clears QR session and cart draft (not tokens; those
   /// are cleared by [SecureStorageService.clearTokens]).

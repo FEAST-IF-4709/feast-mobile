@@ -38,6 +38,7 @@ _$LoyaltyAccountImpl _$$LoyaltyAccountImplFromJson(Map<String, dynamic> json) =>
       pointsBalance: (json['points_balance'] as num).toInt(),
       tier: json['tier'] as String,
       tierPointsInWindow: (json['tier_points_in_window'] as num).toInt(),
+      activeVoucherCount: (json['active_voucher_count'] as num?)?.toInt() ?? 0,
       transactions:
           (json['transactions'] as List<dynamic>?)
               ?.map(
@@ -54,5 +55,6 @@ Map<String, dynamic> _$$LoyaltyAccountImplToJson(
   'points_balance': instance.pointsBalance,
   'tier': instance.tier,
   'tier_points_in_window': instance.tierPointsInWindow,
+  'active_voucher_count': instance.activeVoucherCount,
   'transactions': instance.transactions,
 };

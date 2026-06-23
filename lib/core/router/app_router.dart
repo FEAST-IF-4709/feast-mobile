@@ -27,6 +27,9 @@ import '../../features/order_tracking/presentation/order_tracking_screen.dart';
 import '../../features/order_history/presentation/order_history_screen.dart';
 import '../../features/order_history/presentation/order_detail_screen.dart';
 
+// Notifications (F2)
+import '../../features/notifications/presentation/notification_list_screen.dart';
+
 // Profile (Fase M7)
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/edit_profile_screen.dart';
@@ -36,6 +39,7 @@ import '../../features/brands/domain/brand.dart';
 import '../../features/brands/presentation/brand_detail_screen.dart';
 import '../../screens/home_screen.dart';
 import '../../screens/membership_screen.dart';
+import '../../features/loyalty/presentation/rewards_screen.dart';
 import 'app_routes.dart';
 
 part 'app_router.g.dart';
@@ -200,11 +204,21 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (_, _) => MembershipScreen(),
       ),
       GoRoute(
+        path: AppRoutes.rewards,
+        name: 'rewards',
+        builder: (_, _) => const RewardsScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.brandDetail,
         name: 'brandDetail',
         builder: (_, state) => BrandDetailScreen(
           brand: state.extra as Brand,
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.notifications,
+        name: 'notifications',
+        builder: (_, _) => const NotificationListScreen(),
       ),
     ],
   );

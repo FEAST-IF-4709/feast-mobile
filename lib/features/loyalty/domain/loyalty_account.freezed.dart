@@ -372,6 +372,10 @@ mixin _$LoyaltyAccount {
   /// Points earned in the current tier-calculation window (previous month).
   @JsonKey(name: 'tier_points_in_window')
   int get tierPointsInWindow => throw _privateConstructorUsedError;
+
+  /// Number of AVAILABLE (unredeemed, non-expired) vouchers the customer owns.
+  @JsonKey(name: 'active_voucher_count')
+  int get activeVoucherCount => throw _privateConstructorUsedError;
   List<LoyaltyTransaction> get transactions =>
       throw _privateConstructorUsedError;
 
@@ -397,6 +401,7 @@ abstract class $LoyaltyAccountCopyWith<$Res> {
     @JsonKey(name: 'points_balance') int pointsBalance,
     String tier,
     @JsonKey(name: 'tier_points_in_window') int tierPointsInWindow,
+    @JsonKey(name: 'active_voucher_count') int activeVoucherCount,
     List<LoyaltyTransaction> transactions,
   });
 }
@@ -420,6 +425,7 @@ class _$LoyaltyAccountCopyWithImpl<$Res, $Val extends LoyaltyAccount>
     Object? pointsBalance = null,
     Object? tier = null,
     Object? tierPointsInWindow = null,
+    Object? activeVoucherCount = null,
     Object? transactions = null,
   }) {
     return _then(
@@ -439,6 +445,10 @@ class _$LoyaltyAccountCopyWithImpl<$Res, $Val extends LoyaltyAccount>
             tierPointsInWindow: null == tierPointsInWindow
                 ? _value.tierPointsInWindow
                 : tierPointsInWindow // ignore: cast_nullable_to_non_nullable
+                      as int,
+            activeVoucherCount: null == activeVoucherCount
+                ? _value.activeVoucherCount
+                : activeVoucherCount // ignore: cast_nullable_to_non_nullable
                       as int,
             transactions: null == transactions
                 ? _value.transactions
@@ -464,6 +474,7 @@ abstract class _$$LoyaltyAccountImplCopyWith<$Res>
     @JsonKey(name: 'points_balance') int pointsBalance,
     String tier,
     @JsonKey(name: 'tier_points_in_window') int tierPointsInWindow,
+    @JsonKey(name: 'active_voucher_count') int activeVoucherCount,
     List<LoyaltyTransaction> transactions,
   });
 }
@@ -486,6 +497,7 @@ class __$$LoyaltyAccountImplCopyWithImpl<$Res>
     Object? pointsBalance = null,
     Object? tier = null,
     Object? tierPointsInWindow = null,
+    Object? activeVoucherCount = null,
     Object? transactions = null,
   }) {
     return _then(
@@ -506,6 +518,10 @@ class __$$LoyaltyAccountImplCopyWithImpl<$Res>
             ? _value.tierPointsInWindow
             : tierPointsInWindow // ignore: cast_nullable_to_non_nullable
                   as int,
+        activeVoucherCount: null == activeVoucherCount
+            ? _value.activeVoucherCount
+            : activeVoucherCount // ignore: cast_nullable_to_non_nullable
+                  as int,
         transactions: null == transactions
             ? _value._transactions
             : transactions // ignore: cast_nullable_to_non_nullable
@@ -523,6 +539,7 @@ class _$LoyaltyAccountImpl implements _LoyaltyAccount {
     @JsonKey(name: 'points_balance') required this.pointsBalance,
     required this.tier,
     @JsonKey(name: 'tier_points_in_window') required this.tierPointsInWindow,
+    @JsonKey(name: 'active_voucher_count') this.activeVoucherCount = 0,
     final List<LoyaltyTransaction> transactions = const [],
   }) : _transactions = transactions;
 
@@ -543,6 +560,11 @@ class _$LoyaltyAccountImpl implements _LoyaltyAccount {
   @override
   @JsonKey(name: 'tier_points_in_window')
   final int tierPointsInWindow;
+
+  /// Number of AVAILABLE (unredeemed, non-expired) vouchers the customer owns.
+  @override
+  @JsonKey(name: 'active_voucher_count')
+  final int activeVoucherCount;
   final List<LoyaltyTransaction> _transactions;
   @override
   @JsonKey()
@@ -554,7 +576,7 @@ class _$LoyaltyAccountImpl implements _LoyaltyAccount {
 
   @override
   String toString() {
-    return 'LoyaltyAccount(id: $id, pointsBalance: $pointsBalance, tier: $tier, tierPointsInWindow: $tierPointsInWindow, transactions: $transactions)';
+    return 'LoyaltyAccount(id: $id, pointsBalance: $pointsBalance, tier: $tier, tierPointsInWindow: $tierPointsInWindow, activeVoucherCount: $activeVoucherCount, transactions: $transactions)';
   }
 
   @override
@@ -568,6 +590,8 @@ class _$LoyaltyAccountImpl implements _LoyaltyAccount {
             (identical(other.tier, tier) || other.tier == tier) &&
             (identical(other.tierPointsInWindow, tierPointsInWindow) ||
                 other.tierPointsInWindow == tierPointsInWindow) &&
+            (identical(other.activeVoucherCount, activeVoucherCount) ||
+                other.activeVoucherCount == activeVoucherCount) &&
             const DeepCollectionEquality().equals(
               other._transactions,
               _transactions,
@@ -582,6 +606,7 @@ class _$LoyaltyAccountImpl implements _LoyaltyAccount {
     pointsBalance,
     tier,
     tierPointsInWindow,
+    activeVoucherCount,
     const DeepCollectionEquality().hash(_transactions),
   );
 
@@ -609,6 +634,7 @@ abstract class _LoyaltyAccount implements LoyaltyAccount {
     required final String tier,
     @JsonKey(name: 'tier_points_in_window')
     required final int tierPointsInWindow,
+    @JsonKey(name: 'active_voucher_count') final int activeVoucherCount,
     final List<LoyaltyTransaction> transactions,
   }) = _$LoyaltyAccountImpl;
 
@@ -629,6 +655,11 @@ abstract class _LoyaltyAccount implements LoyaltyAccount {
   @override
   @JsonKey(name: 'tier_points_in_window')
   int get tierPointsInWindow;
+
+  /// Number of AVAILABLE (unredeemed, non-expired) vouchers the customer owns.
+  @override
+  @JsonKey(name: 'active_voucher_count')
+  int get activeVoucherCount;
   @override
   List<LoyaltyTransaction> get transactions;
 

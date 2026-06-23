@@ -17,5 +17,7 @@ abstract final class AppRoutes {
   static const editProfile = '/profile/edit';
   static const personalInfo = '/profile/personal-info';
   static const membership = '/membership';
+  static const rewards = '/rewards';
   static const brandDetail = '/brand/:brandId';
+  static const notifications = '/notifications';
 }

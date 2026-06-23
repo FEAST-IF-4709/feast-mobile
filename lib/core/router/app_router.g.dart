@@ -6,7 +6,7 @@ part of 'app_router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appRouterHash() => r'0a5c12c1539c03c067ea22640c21dcc15fc0038f';
+String _$appRouterHash() => r'4ddc5ffc1d4212aafa18c9aa559ba90fc676231a';
 
 /// Centralised go_router instance (CLAUDE.md §5).
 ///
