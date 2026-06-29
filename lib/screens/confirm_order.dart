@@ -1,8 +1,6 @@
 import 'package:feast/screens/payment_screen.dart';
-import 'package:feast/screens/voucher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../core/app_colors.dart';
 
 class ConfirmOrderPage extends StatefulWidget {
   final Map<String, dynamic> restaurant;
@@ -220,10 +218,9 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
 
               SizedBox(height: screenHeight * 0.04),
 
+              // TODO(M7): Vouchers out of scope for Phase 1 (PRD §8)
               GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => VoucherPage())
-                  );},
+                onTap: null,
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     vertical: screenHeight * 0.025,
@@ -246,7 +243,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
+                                  color: Colors.black.withValues(alpha: 0.05),
                                   blurRadius: 5,
                                   offset: const Offset(0, 2),
                                 ),
@@ -341,7 +338,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
+                                    color: Colors.black.withValues(alpha: 0.05),
                                     blurRadius: 5,
                                     offset: const Offset(0, 2),
                                   ),
@@ -439,7 +436,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               offset: const Offset(0, -4),
               blurRadius: 10,
             )
