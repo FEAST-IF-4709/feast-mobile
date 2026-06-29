@@ -206,7 +206,6 @@ docker compose up --build
 ## Dokumentasi Lengkap
 
 - [Panduan Instalasi Lengkap](docs/PANDUAN_INSTALASI.md) — setup backend, frontend, Flutter, Firebase, dan import database
-- [Panduan Demo](DOKUMENTASI_DEMO.md) — tur fitur, alur POS, Kitchen Display, dan cara bypass pembayaran
 
 ---
 
