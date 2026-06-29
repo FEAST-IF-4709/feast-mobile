@@ -7,5 +7,5 @@
 /// For web or iOS Simulator: flutter run --dart-define=API_BASE_URL=http://localhost:8000
 const String kApiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://192.168.18.17:8000',
+  defaultValue: 'http://localhost:8000',
 );
