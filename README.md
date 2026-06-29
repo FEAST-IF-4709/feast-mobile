@@ -18,19 +18,19 @@ FEAST adalah platform SaaS manajemen restoran multi-tenant yang mencakup sistem 
 
 ```
 ┌─────────────────────┐     ┌─────────────────────┐
-│   Dashboard Web      │     │   Aplikasi Flutter   │
-│   React 19 + Vite   │     │   (Customer Mobile)  │
+│   Dashboard Web     │     │   Aplikasi Flutter  │
+│   React 19 + Vite   │     │   (Customer Mobile) │
 └────────┬────────────┘     └──────────┬──────────┘
-         │  REST API + WebSocket        │  REST API + WebSocket
-         ▼                              ▼
+         │  REST API + WebSocket       │  REST API + WebSocket
+         ▼                             ▼
 ┌──────────────────────────────────────────────────┐
-│              Backend Django 6 (ASGI)              │
+│              Backend Django 6 (ASGI)             │
 │   DRF · JWT · django-channels · drf-spectacular  │
 └──────────┬──────────────────┬────────────────────┘
            │                  │
     ┌──────▼──────┐    ┌──────▼──────┐
-    │  PostgreSQL  │    │    Redis    │
-    │  (data)      │    │  (realtime/ │
+    │  PostgreSQL │    │    Redis    │
+    │  (data)     │    │  (realtime/ │
     └─────────────┘    │   cache)    │
                        └─────────────┘
 ```
